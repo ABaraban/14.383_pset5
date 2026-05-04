@@ -1,5 +1,6 @@
-install.packages("hdm")
-install.packages("ggplot2")
+# install.packages("hdm")
+# install.packages("ggplot2")
+setwd("~/classes/metrics/14.383_pset5")
 
 library(hdm)
 library(ggplot2)
@@ -86,3 +87,9 @@ options(repr.plot.width = img_width, repr.plot.height = img_height)
 
 # Display the histogram
 print(hist_plot)
+ggsave(
+  filename = "histogram_output_problem2.png",
+  plot = hist_plot,
+  width = img_width,
+  height = img_height
+)
