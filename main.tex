@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath,amssymb,amsthm} % Math stuff
+\usepackage{enumitem} % For improved lists
+\usepackage{fancyhdr} % For headers
+\usepackage{geometry} % Page geometry
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\geometry{margin=1in}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage[colorlinks=true, 
+    linkcolor=blue, 
+    citecolor=blue, 
+    urlcolor=blue, 
+    filecolor=blue]{hyperref}
+
+% Header
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Asher Baraban, Matej Cerman \\ Martin Hiti}
+\chead{14.383}
+\rhead{Problem Set 5}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+
+% For easier problem/solution environments
+\newenvironment{problem}[1]
+    {\bigskip\noindent\textbf{Problem #1.}\par\setlength{\parindent}{0pt}}
+    {\medskip}
+\newenvironment{solution}[1]
+    {\bigskip\noindent\textbf{Solution #1.} \par}
+    {\medskip}
+
+\newcommand\barbelow[1]{\stackunder[1.2pt]{$#1$}{\rule{.8ex}{.075ex}}}
+
+
+
+
+% Math shortcuts
+\newcommand{\ev}{\mathbb{E}}
+\newcommand{\evn}{\mathbb{E}_n}
+\newcommand{\R}{\mathbb{R}}
+
+% Title
+\title{Problem Set 5 \\ 14.383}
+\author{Asher Baraban, Matej Cerman, Martin Hiti}
+\date{\today}
+
+% Document
+\begin{document}
+
+
+\maketitle
+
+\noindent \textit{Notes}:
+\begin{itemize}
+    \item All code is in\url{https://github.com/ABaraban/14.383_pset5} and from the colab notebooks shared for the problem set 
+    \item All three group members took 14.381 last semester
+\end{itemize}
+
+\subsection*{Chapter 11} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}{11.1 or 11.2}
+
+\end{problem}
+
+\begin{solution}{11.1 or 11.2}
+
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{problem}{2 }
+
+\end{problem}
+
+\begin{solution}{2}
+\textbf{Neyman Orthogonality}
+- In the double lasso approach the estimand of interest is $\alpha$ the treatment effect and $\eta^0 = (\gamma_{YW}', \gamma_{DW}')$ are the nuisance parameters obtained from partialling out. 
+\[\hat{\gamma}_{YW} = \arg\min_{\gamma} \sum_{i}(Y_i - \gamma' W_i)^2 + \lambda_1 \sum_j\hat{\psi}_j|\gamma_j|\]
+\[\hat{\gamma}_{DW} = \arg\min_{\gamma} \sum_{i}(D_i - \gamma' W_i)^2 + \lambda_2 \sum_j\hat{\psi}_j|\gamma_j|\]
+Then, we obtain the residuals after partialling out, which I will denote as  $\tilde{Y}_i, \tilde{D}_i$. The double lasso exploits the empirical analogue of the following moment condition. 
+\[g(\alpha, \eta) = E[(\tilde{Y}(\eta_1) - a \tilde{D}(\eta_2))\tilde{D}(\eta_2)]=0\]
+Here the true parameter $a=\alpha$ solves the above moment equation when
+\[\eta := (\eta_1', \eta_2') = \eta^0:= (\gamma_{YW}', \gamma_{DW}')
+'\]
+Now we consider the derivative of the score w.r.t to $\eta$
+\[\partial_{\eta_1} g(\alpha, \eta^0) = E[W\tilde{D}] = 0, \partial_{\eta_2} = -E[\tilde{Y}W] + 2E[\alpha \tilde{D}W] = 0\]
+These FOCs are Neyman Orthogonality. This has an envelope theorem style intuition. Small perturbations in the estimation of the nuisance parameters will not create large estimation issues for the empirical estimand of interest $\alpha$. At the optimum changing $\eta$ won't affect the score! Succinctly 
+\[\partial_\eta g(\alpha, \eta^0) = 0\]
+
+\textbf{Approximate Sparsity} - Informally, in order for lasso to work we need approximate sparsity of $\eta^0$. Formally, 
+\[|\gamma_{YW}|_{(j)} \leq A_j^{-a}, |\gamma_{DW}|_{(j)} \leq A_j^{-a}\]
+Where $a>1$ and $j \in \{1,...,p\}$
+
+
+    
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}{3}
+
+\end{problem}
+
+\begin{solution}{3}
+We ran the notebook using Daron's Democracy example, and found some interesting results. The idea is that we want to understand how economic growth is related to the initial wealth level of countries controlling for institutions, democracy, etc. (as we know they have a causal effect on growth). 
+\[ Y = \beta_1 D +  \beta_2'W + \epsilon\]
+Since we have 63 controls and 90 countries $p/n$ is not small. Therefore, the least squares approach will not work well. Thus, we need to use a lasso method to recover a reasonable solution. 
+
+\end{solution}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\begin{problem}{4}
+
+\end{problem}
+
+\begin{solution}{4}
+The problem is set in the context of a IV structural model, which differs from the canonical IV model due to the non-linearity present in both equations ($g_0(X)$ is a potentially non-linear function of covariates $X$, capturing their effect on the outcome, and $m_0(X)$ captures a potentially non-linear relationship between those covariates and an instrument $Z$ which affects the treatment $D$).
+
+\begin{align}
+ Y :=~& D\theta_0 + g_0(X) + \zeta,  & E[\zeta \mid Z,X]= 0,\\
+ Z :=~& m_0(X) +  V,   &  E[V \mid X] = 0.
+\end{align}
+
+We can write this model using a standard residualized form, with tilde variables denoting a residualization with respect to $X$: $\tilde Y = \tilde D \theta_0 + \zeta, \quad E[\zeta |V,X] = 0 $. Note that the residualization here is not done via linear regression as in Frisch-Waugh, but instead via a flexible ML algorithm that estimates the conditional mean of a variable as a non-linear function of $X$. In particular, the algorithm should employ cross-validation to reduce potential overfitting, particularly in a high-dimensional setting.
+
+
+
+\end{solution}
+
+
+\end{document}
