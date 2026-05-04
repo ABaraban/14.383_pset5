@@ -124,6 +124,17 @@ We ran the notebook using Daron's Democracy example, and found some interesting 
 \[ Y = \beta_1 D +  \beta_2'W + \epsilon\]
 Since we have 63 controls and 90 countries $p/n$ is not small. Therefore, the least squares approach will not work well. Thus, we need to use a lasso method to recover a reasonable solution. 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{problem_3_treatment_lasso_cv_plot.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{problem_3_outcome_lasso_cv_plot.png}
+\end{figure}
+
+From the figures above we can see that the cross validation overfits, using a penalty level very close to $0$. Therefore, we should prefer a theoretically chosen lasso parameter as in the the earlier part of the problem. 
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -143,6 +154,8 @@ The problem is set in the context of a IV structural model, which differs from t
 \end{align}
 
 We can write this model using a standard residualized form, with tilde variables denoting a residualization with respect to $X$: $\tilde Y = \tilde D \theta_0 + \zeta, \quad E[\zeta |V,X] = 0 $. Note that the residualization here is not done via linear regression as in Frisch-Waugh, but instead via a flexible ML algorithm that estimates the conditional mean of a variable as a non-linear function of $X$. In particular, the algorithm should employ cross-validation to reduce potential overfitting, particularly in a high-dimensional setting.
+
+After we've used an ML algorithm to estimate $\tilde Y,\tilde D, \tilde Z$, we can run a standard linear 2SLS IV procedure on these residualized quantities, (conceptually) running a first-stage regression of $\tilde D$ on $\tilde Z$ and a reduced-form regression of $\tilde Y$ on $\tilde Z$, recovering an estimate of $\theta_0$ as the ratio of the two resulting coefficients.
 
 
 
