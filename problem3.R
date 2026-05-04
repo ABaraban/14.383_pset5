@@ -1,16 +1,18 @@
-install.packages("hdm")
-install.packages("xtable")
-install.packages("lmtest")
-install.packages("sandwich")
-install.packages("glmnet")
-install.packages("ggplot2")
+# install.packages("hdm")
+# install.packages("xtable")
+# install.packages("lmtest")
+# install.packages("sandwich")
+# install.packages("glmnet")
+# install.packages("ggplot2")
 
+setwd("~/classes/metrics/14.383_pset5")
 library(hdm)
 library(xtable)
 library(lmtest)
 library(sandwich)
 library(glmnet) # For LassoCV
 library(ggplot2)
+
 
 getdata <- function(...) {
   e <- new.env()
@@ -57,6 +59,18 @@ lower_ci <- est - 1.96 * se
 upper_ci <- est + 1.96 * se
 
 cat("95% Confidence Interval: [", lower_ci, ",", upper_ci, "]")
+
+# Create an empty data frame with column names
+table <- data.frame(
+  Method = character(0),
+  Estimate = character(0),
+  `Std. Error` = numeric(0),
+  `Lower Bound CI` = numeric(0),
+  `Upper Bound CI` = numeric(0)
+)
+
+# Add OLS results to the table
+table <- rbind(table, c("OLS", est, se, lower_ci, upper_ci))
 
 y <- growth$Outcome
 W <- growth[-which(colnames(growth) %in% c("Outcome", "intercept", "gdpsh465"))]
@@ -165,7 +179,7 @@ results_d <- data.frame(
 )
 
 # Plot Outcome Lasso-CV Model
-ggplot(data = results_y, aes(x = Alphas, y = OutOfSampleR2)) +
+plot <- ggplot(data = results_y, aes(x = Alphas, y = OutOfSampleR2)) +
   geom_line() +
   labs(
     title = "Outcome Lasso-CV Model: Out-of-sample R-squared as function of penalty level",
@@ -173,8 +187,17 @@ ggplot(data = results_y, aes(x = Alphas, y = OutOfSampleR2)) +
     y = "Out-of-sample R-squared"
   )
 
+print(plot)
+
+ggsave(
+  filename = "problem_3_outcome_lasso_cv_plot.png",
+  plot = plot,
+  width = 10,
+  height = 6
+)
+
 # Plot Treatment Lasso-CV Model
-ggplot(data = results_d, aes(x = (Alphas), y = OutOfSampleR2)) +
+plot_d <- ggplot(data = results_d, aes(x = (Alphas), y = OutOfSampleR2)) +
   geom_line() +
   labs(
     title = "Treatment Lasso-CV Model: Out-of-sample R-squared as function of penalty level",
@@ -182,5 +205,13 @@ ggplot(data = results_d, aes(x = (Alphas), y = OutOfSampleR2)) +
     y = "Out-of-sample R-squared"
   )
 
+print(plot_d)
+
+ggsave(
+  filename = "problem_3_treatment_lasso_cv_plot.png",
+  plot = plot_d,
+  width = 10,
+  height = 6
+)
 
 
