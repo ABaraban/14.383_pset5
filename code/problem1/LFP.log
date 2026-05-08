@@ -5024,3 +5024,11 @@ installation complete.
 . 
 end of do-file
 
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. outtable using "table2", mat(results) replace format(%9.3f)
+(file table2.tex not found)
+
+. 
+end of do-file
+
