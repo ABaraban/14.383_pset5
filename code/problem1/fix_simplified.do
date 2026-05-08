@@ -114,7 +114,8 @@ matrix results = col1, col2, col3, col4
 matrix colnames results = "Fixed effects" "Analytical BC" "Jackknife BC" "SE"
 matrix list results, format(%9.4f)
 
-outtable using "table2.tex", mat(results) replace
+outtable using "table2", mat(results) replace format(%9.3f)
+
 
 
 
