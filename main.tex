@@ -73,11 +73,23 @@ as R or Stata.
 \end{problem}
 
 \begin{solution}{11.2}
-We report the two tables below. 
+We report the two tables below. In the first table, we show the estimated parameters from running a fixed-effects probit model in the PSID panel, where:
+\begin{itemize}
+    \item The outcome is $LPF_t$, the labor force participation of a woman at time $t$
+    \item The Kids variables inlcude the number of children aged 0-2, 3-5, and 6-17 respectively
+    \item Other controls include the log of the husband's income and a quadratic in age
+    \item The model includes $LFP_{t-1}$, one lag of the outcome, as a control
+\end{itemize}
+
+The table has three columns, with the first corresponding to estimating a model with no bias correction, and the second to a model with analytical bias correction using a correction $\check \alpha = \hat \alpha - \frac{\hat B}{T} - \frac{\hat D}{N}$ with $\hat B,\hat D$ being estimates of the $B,D$ vectors that factor into the asymptotic bias.
+
+The third column reports estimates with a Jackknife Bias Correction, implemented via sample-splitting repeated multiple times along the cross-sectional dimension. The correction estimates $\hat \alpha_{N/2,T}$ (an estimate using half the sample) multiple times, averages them, and then subtracts $\hat \alpha$ to get an estimate of the bias to subtract and obtain $\check \alpha$. Note that we ran into numerical issues in Stata with choosing $m=20$ splits as in the textbook, so the reported Jackknife estimates use $m=5$ splits. This is necessarily less stable, but the results are quantitatively extremely similar to the textbook. The magnitude of the estimated bias (difference between the raw and the bias-corrected estimates) is often on the order of the standard error of the APE, reported in the last column.
 
 \begin{center}
 \input{code/problem1/table1}
 \end{center}
+
+The second table reports the same model specifications, but the estimands of interest are APEs instead of the probit model coefficients. In general, the bias corrections appear to substantially raise the predictive power of $LFP_{t-1}$, the lagged term (if a woman worked in the previous year, she is $20$ p.p. more likely to work this year, vs $10$ p.p. with no bias correction), and somewhat raise the negative effect of children on labor force participation.
 
 
 \begin{center}
@@ -174,6 +186,10 @@ We can write this model using a standard residualized form, with tilde variables
 
 After we've used an ML algorithm to estimate $\tilde Y,\tilde D, \tilde Z$, we can run a standard linear 2SLS IV procedure on these residualized quantities, (conceptually) running a first-stage regression of $\tilde D$ on $\tilde Z$ and a reduced-form regression of $\tilde Y$ on $\tilde Z$, recovering an estimate of $\theta_0$ as the ratio of the two resulting coefficients.
 
+
+\begin{center}
+    \includegraphics[scale=0.6]{}
+\end{center}
 
 
 \end{solution}
