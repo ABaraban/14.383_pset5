@@ -184,13 +184,19 @@ The problem is set in the context of a IV structural model, which differs from t
 
 We can write this model using a standard residualized form, with tilde variables denoting a residualization with respect to $X$: $\tilde Y = \tilde D \theta_0 + \zeta, \quad E[\zeta |V,X] = 0 $. Note that the residualization here is not done via linear regression as in Frisch-Waugh, but instead via a flexible ML algorithm that estimates the conditional mean of a variable as a non-linear function of $X$. In particular, the algorithm should employ cross-validation to reduce potential overfitting, particularly in a high-dimensional setting.
 
-After we've used an ML algorithm to estimate $\tilde Y,\tilde D, \tilde Z$, we can run a standard linear 2SLS IV procedure on these residualized quantities, (conceptually) running a first-stage regression of $\tilde D$ on $\tilde Z$ and a reduced-form regression of $\tilde Y$ on $\tilde Z$, recovering an estimate of $\theta_0$ as the ratio of the two resulting coefficients.
-
+After we've used an ML algorithm to estimate $\tilde Y,\tilde D, \tilde Z$, we can run a standard linear 2SLS IV procedure on these residualized quantities, (conceptually) running a first-stage regression of $\tilde D$ on $\tilde Z$ and a reduced-form regression of $\tilde Y$ on $\tilde Z$, recovering an estimate of $\theta_0$ as the ratio of the two resulting coefficients. Working wit the residualized 
 
 \begin{center}
-    \includegraphics[scale=0.6]{}
+    \input{code/rmse_comparison}
 \end{center}
 
+\begin{center}
+    \includegraphics[scale=0.3]{code/lasso_ar_plot.png}
+\end{center}
+
+\begin{center}
+    \includegraphics[scale=0.3]{code/rf_ar_plot.png}
+\end{center}
 
 \end{solution}
 
