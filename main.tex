@@ -21,7 +21,7 @@
 % Header
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Asher Baraban, Matej Cerman \\ Martin Hiti}
+\lhead{Asher Baraban, Matej Cerman}
 \chead{14.383}
 \rhead{Problem Set 5}
 \cfoot{\thepage}
@@ -59,18 +59,23 @@
 
 \noindent \textit{Notes}:
 \begin{itemize}
-    \item All code is in\url{https://github.com/ABaraban/14.383_pset5} and from the colab notebooks shared for the problem set 
+    \item All code is in \url{https://github.com/ABaraban/14.383_pset5} and from the colab notebooks shared for the problem set 
     \item All three group members took 14.381 last semester
 \end{itemize}
 
 \subsection*{Chapter 11} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{problem}{11.1 or 11.2}
-
+\begin{problem}{11.2}
+Replicate the empirical results of Tables 10.3 and 10.4 for the
+fixed effects and jackknife BC using standard software such
+as R or Stata.
 \end{problem}
 
-\begin{solution}{11.1 or 11.2}
+\begin{solution}{11.2}
+We report the two tables below. 
+
+\include{code/}
 
 \end{solution}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,6 +112,11 @@ These FOCs are Neyman Orthogonality. This has an envelope theorem style intuitio
 \[|\gamma_{YW}|_{(j)} \leq A_j^{-a}, |\gamma_{DW}|_{(j)} \leq A_j^{-a}\]
 Where $a>1$ and $j \in \{1,...,p\}$
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{histogram_output_problem2.png}
+\end{figure}
+As we can see in the figure above, when we do not use double selection we end up with a severe bias as in general $E[DW]\neq 0$. But we do have that $E[\tilde{D}W] = 0$ from partialling out using lasso. This results in the beautiful normally distributed close to unbiased histogram on the right. 
 
     
 \end{solution}
