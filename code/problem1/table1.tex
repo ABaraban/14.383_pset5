@@ -1,0 +1,34 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{3}{c}}
+\hline\hline
+                &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                &\multicolumn{1}{c}{Fixed effects}&\multicolumn{1}{c}{Analytical BC}&\multicolumn{1}{c}{Jackknife BC}\\
+\hline
+Lagged LFP      &    0.757\sym{***}&    1.082\sym{***}&    1.261\sym{***}\\
+                &  (0.043)         &  (0.043)         &  (0.043)         \\
+[1em]
+Kids 0-2        &   -0.553\sym{***}&   -0.445\sym{***}&   -0.603\sym{***}\\
+                &  (0.058)         &  (0.058)         &  (0.058)         \\
+[1em]
+Kids 3-5        &   -0.290\sym{***}&   -0.201\sym{***}&   -0.342\sym{***}\\
+                &  (0.053)         &  (0.053)         &  (0.053)         \\
+[1em]
+Kids 6-17       &   -0.074\sym{*}  &   -0.052         &   -0.131\sym{***}\\
+                &  (0.043)         &  (0.043)         &  (0.043)         \\
+[1em]
+Log husband income in 1995 $1000&   -0.252\sym{***}&   -0.206\sym{***}&   -0.327\sym{***}\\
+                &  (0.055)         &  (0.055)         &  (0.055)         \\
+[1em]
+Age             &    2.333\sym{***}&    1.854\sym{***}&    1.520\sym{**} \\
+                &  (0.627)         &  (0.627)         &  (0.627)         \\
+[1em]
+Age squared     &   -0.244\sym{***}&   -0.186\sym{***}&   -0.166\sym{***}\\
+                &  (0.052)         &  (0.052)         &  (0.052)         \\
+\hline
+Observations    &     5976         &     5976         &     5976         \\
+\hline\hline
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}

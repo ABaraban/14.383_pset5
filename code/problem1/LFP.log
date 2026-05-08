@@ -1,0 +1,5026 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/
+> 14.383/14.383_pset5/code/problem1/LFP.log
+  log type:  text
+ opened on:   7 May 2026, 21:53:48
+
+. 
+. use "PSID-1980-1988.dta", clear
+
+. *cd programs/LFP
+. 
+. * Put labels to variables
+. 
+. label var lfp "LFP"
+
+. label var laglfp "Lagged LFP"
+
+. label var kids0_2 "Kids 0-2"
+
+. label var kids3_5 "Kids 3-5"
+
+. label var kids6_17 "Kids 6-17"
+
+. label var loghusbandincome "Log husband income in 1995 $1000"
+
+. label var age "Age"
+
+. label var age2 "Age squared"
+
+. 
+. * Specify that the data set is a panel and the variables for the dimensions
+. 
+. tsset ID1979 year
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. 
+. * Descriptive Statistics
+. 
+. sum
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      ID1979 |     13,149     3160.51     1760.22          1       6365
+        year |     13,149        1984    2.582087       1980       1988
+         lfp |     13,149    .7237052    .4471814          0          1
+      laglfp |     13,149    .7210434    .4485032          0          1
+     kids0_2 |     13,149    .2269374    .4662979          0          4
+-------------+---------------------------------------------------------
+     kids3_5 |     13,149    .2883109    .5134348          0          3
+    kids6_17 |     13,149    1.049662    1.095271          0          7
+loghusband~e |     13,149    10.43141    .6898532   5.030412   14.10835
+         age |     13,149    3.730033    .9217643        1.8        6.4
+        age2 |     13,149    14.76273    7.413855       3.24      40.96
+
+. 
+. *sutex
+. 
+. xtsum
+
+Variable         |      Mean   Std. dev.       Min        Max |    Observations
+-----------------+--------------------------------------------+----------------
+ID1979   overall |   3160.51    1760.22          1       6365 |     N =   13149
+         between |             1760.755          1       6365 |     n =    1461
+         within  |                    0    3160.51    3160.51 |     T =       9
+                 |                                            |
+year     overall |      1984   2.582087       1980       1988 |     N =   13149
+         between |                    0       1984       1984 |     n =    1461
+         within  |             2.582087       1980       1988 |     T =       9
+                 |                                            |
+lfp      overall |  .7237052   .4471814          0          1 |     N =   13149
+         between |               .34565          0          1 |     n =    1461
+         within  |             .2838484  -.1651837   1.612594 |     T =       9
+                 |                                            |
+laglfp   overall |  .7210434   .4485032          0          1 |     N =   13149
+         between |             .3433685          0          1 |     n =    1461
+         within  |             .2886605  -.1678455   1.609932 |     T =       9
+                 |                                            |
+kids0_2  overall |  .2269374   .4662979          0          4 |     N =   13149
+         between |             .2897915          0   1.555556 |     n =    1461
+         within  |             .3653844  -1.328618   2.671382 |     T =       9
+                 |                                            |
+kids3_5  overall |  .2883109   .5134348          0          3 |     N =   13149
+         between |             .3146209          0   1.555556 |     n =    1461
+         within  |             .4058191  -1.267245   2.621644 |     T =       9
+                 |                                            |
+kids6_17 overall |  1.049662   1.095271          0          7 |     N =   13149
+         between |             .9085494          0   4.888889 |     n =    1461
+         within  |             .6120929  -2.617005   4.160773 |     T =       9
+                 |                                            |
+loghus~e overall |  10.43141   .6898532   5.030412   14.10835 |     N =   13149
+         between |             .5884345   7.653063   13.26372 |     n =    1461
+         within  |             .3603511   6.203182   12.76191 |     T =       9
+                 |                                            |
+age      overall |  3.730033   .9217643        1.8        6.4 |     N =   13149
+         between |             .8838803        2.2   5.944444 |     n =    1461
+         within  |             .2624508   2.707811   4.685588 |     T =       9
+                 |                                            |
+age2     overall |  14.76273   7.413855       3.24      40.96 |     N =   13149
+         between |             7.136404   4.906666   35.39889 |     n =    1461
+         within  |             2.016923   5.238284    22.6094 |     T =       9
+
+. 
+. *sutex
+. 
+. *1. Static probit model with individual and time effects
+. 
+. *1.a. No correction
+. probitfe lfp  kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3725.7589  
+Iteration 1:  f(p) = -3025.2612  
+Iteration 2:  f(p) = -3017.8911  
+Iteration 3:  f(p) = -3017.8696  
+Iteration 4:  f(p) = -3017.8696  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 677)        =  2116.31
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -3017.869625                  Pseudo R2            =   0.2596
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -.7125366    .055839   -12.76   0.000     -.821979   -.6030942
+         kids3_5 |  -.4210284   .0514986    -8.18   0.000    -.5219638   -.3200931
+        kids6_17 |  -.1299965   .0411074    -3.16   0.002    -.2105655   -.0494274
+loghusbandincome |  -.2509321   .0540784    -4.64   0.000    -.3569239   -.1449404
+             age |   2.706445   .6047997     4.47   0.000      1.52106    3.891831
+            age2 |  -.2851654   .0500405    -5.70   0.000     -.383243   -.1870878
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -.0921543   .0424988    -2.17   0.030    -.1754504   -.0088581
+         kids3_5 |  -.0544527   .0256274    -2.12   0.034    -.1046815    -.004224
+        kids6_17 |  -.0168128   .0093091    -1.81   0.071    -.0350583    .0014327
+loghusbandincome |  -.0324537   .0163233    -1.99   0.047    -.0644468   -.0004607
+             age |   .3500319   .1772729     1.97   0.048     .0025834    .6974803
+            age2 |  -.0368812   .0179683    -2.05   0.040    -.0720984    -.001664
+----------------------------------------------------------------------------------
+
+. 
+. outtex 
+
+%------- Begin LaTeX code -------%
+
+{
+\begin{table}[htbp]\centering
+ \caption{Estimation results : probitfe
+\label{tabresult probitfe}}
+\begin{tabular}{l c c }\hline\hline 
+\multicolumn{1}{c}
+{\textbf{Variable}}
+ & {\textbf{Coefficient}}  & \textbf{(Std. Err.)} \\ \hline
+kids0\_2  &  -0.713  & (0.056)\\
+kids3\_5  &  -0.421  & (0.051)\\
+kids6\_17  &  -0.130  & (0.041)\\
+loghusbandincome  &  -0.251  & (0.054)\\
+age  &  2.706  & (0.605)\\
+age2  &  -0.285  & (0.050)\\
+\hline
+\end{tabular}
+\end{table}
+}
+
+%------- End LaTeX code -------%
+
+. 
+. *1.b. Analytical correction, 0-lags
+. probitfe lfp  kids0_2 kids3_5 kids6_17 loghusbandincome age age2, l0
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3725.7589  
+Iteration 1:  f(p) = -3025.2612  
+Iteration 2:  f(p) = -3017.8911  
+Iteration 3:  f(p) = -3017.8696  
+Iteration 4:  f(p) = -3017.8696  
+
+Computing analytical correction
+Iteration 0:  f(p) = -9676.3257  
+Iteration 1:  f(p) = -3604.7887  
+Iteration 2:  f(p) =   -3023.19  
+Iteration 3:  f(p) = -3019.6003  
+Iteration 4:  f(p) = -3019.5952  
+Iteration 5:  f(p) = -3019.5952  
+
+Analytical bias-correction
+Type of correction: individual and time effects
+-----------------------------------------------
+Trimming parameter = 0
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 677)        =  2116.31
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -3017.869625                  Pseudo R2            =   0.2596
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |    -.62769    .055839   -11.24   0.000    -.7371324   -.5182475
+         kids3_5 |  -.3709004   .0514986    -7.20   0.000    -.4718357    -.269965
+        kids6_17 |  -.1147035   .0411074    -2.79   0.005    -.1952725   -.0341344
+loghusbandincome |    -.22162   .0540784    -4.10   0.000    -.3276118   -.1156283
+             age |   2.392262   .6047997     3.96   0.000     1.206877    3.577648
+            age2 |  -.2517333   .0500405    -5.03   0.000    -.3498109   -.1536557
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -.1010559   .0424988    -2.38   0.017    -.1843521   -.0177597
+         kids3_5 |  -.0597137   .0256274    -2.33   0.020    -.1099424   -.0094849
+        kids6_17 |  -.0184669   .0093091    -1.98   0.047    -.0367123   -.0002214
+loghusbandincome |  -.0356801   .0163233    -2.19   0.029    -.0676731    -.003687
+             age |   .3851459   .1772729     2.17   0.030     .0376975    .7325943
+            age2 |  -.0405282   .0179683    -2.26   0.024    -.0757454    -.005311
+----------------------------------------------------------------------------------
+
+. 
+. outtex
+
+%------- Begin LaTeX code -------%
+
+{
+\begin{table}[htbp]\centering
+ \caption{Estimation results : probitfe
+\label{tabresult probitfe}}
+\begin{tabular}{l c c }\hline\hline 
+\multicolumn{1}{c}
+{\textbf{Variable}}
+ & {\textbf{Coefficient}}  & \textbf{(Std. Err.)} \\ \hline
+kids0\_2  &  -0.628  & (0.056)\\
+kids3\_5  &  -0.371  & (0.051)\\
+kids6\_17  &  -0.115  & (0.041)\\
+loghusbandincome  &  -0.222  & (0.054)\\
+age  &  2.392  & (0.605)\\
+age2  &  -0.252  & (0.050)\\
+\hline
+\end{tabular}
+\end{table}
+}
+
+%------- End LaTeX code -------%
+
+. 
+. 
+. *1.c. Jackknife correction, split in time series and cross section
+. probitfe lfp  kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(20) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3725.7589  
+Iteration 1:  f(p) = -3025.2612  
+Iteration 2:  f(p) = -3017.8911  
+Iteration 3:  f(p) = -3017.8696  
+Iteration 4:  f(p) = -3017.8696  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) = -1859.7303  
+Iteration 1:  f(p) = -1512.7886  
+Iteration 2:  f(p) = -1509.0892  
+Iteration 3:  f(p) = -1509.0793  
+Iteration 4:  f(p) = -1509.0793  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) =  -1869.263  
+Iteration 1:  f(p) = -1508.1026  
+Iteration 2:  f(p) = -1504.0574  
+Iteration 3:  f(p) = -1504.0417  
+Iteration 4:  f(p) = -1504.0417  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 1 of 20
+Iteration 0:  f(p) = -2001.4293  
+Iteration 1:  f(p) = -1638.8021  
+Iteration 2:  f(p) = -1635.2206  
+Iteration 3:  f(p) = -1635.2127  
+Iteration 4:  f(p) = -1635.2127  
+Iteration 0:  f(p) =  -1720.489  
+Iteration 1:  f(p) = -1378.5773  
+Iteration 2:  f(p) = -1374.5391  
+Iteration 3:  f(p) =  -1374.523  
+Iteration 4:  f(p) =  -1374.523  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 2 of 20
+Iteration 0:  f(p) = -1961.4807  
+Iteration 1:  f(p) = -1598.9272  
+Iteration 2:  f(p) = -1595.3068  
+Iteration 3:  f(p) = -1595.2976  
+Iteration 4:  f(p) = -1595.2976  
+Iteration 0:  f(p) = -1758.8251  
+Iteration 1:  f(p) = -1414.2805  
+Iteration 2:  f(p) = -1410.1383  
+Iteration 3:  f(p) = -1410.1217  
+Iteration 4:  f(p) = -1410.1217  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 3 of 20
+Iteration 0:  f(p) = -1924.7276  
+Iteration 1:  f(p) = -1536.8824  
+Iteration 2:  f(p) = -1532.3352  
+Iteration 3:  f(p) =  -1532.317  
+Iteration 4:  f(p) =  -1532.317  
+Iteration 0:  f(p) = -1796.0444  
+Iteration 1:  f(p) = -1478.0029  
+Iteration 2:  f(p) = -1474.6958  
+Iteration 3:  f(p) = -1474.6881  
+Iteration 4:  f(p) = -1474.6881  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 4 of 20
+Iteration 0:  f(p) =  -1901.951  
+Iteration 1:  f(p) = -1547.7697  
+Iteration 2:  f(p) = -1544.0624  
+Iteration 3:  f(p) = -1544.0518  
+Iteration 4:  f(p) = -1544.0518  
+Iteration 0:  f(p) = -1820.3262  
+Iteration 1:  f(p) = -1469.1265  
+Iteration 2:  f(p) = -1464.9008  
+Iteration 3:  f(p) = -1464.8851  
+Iteration 4:  f(p) = -1464.8851  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 5 of 20
+Iteration 0:  f(p) = -1835.2306  
+Iteration 1:  f(p) = -1484.6384  
+Iteration 2:  f(p) = -1481.0413  
+Iteration 3:  f(p) = -1481.0302  
+Iteration 4:  f(p) = -1481.0302  
+Iteration 0:  f(p) = -1883.7192  
+Iteration 1:  f(p) = -1525.3888  
+Iteration 2:  f(p) = -1520.8381  
+Iteration 3:  f(p) = -1520.8185  
+Iteration 4:  f(p) = -1520.8185  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 6 of 20
+Iteration 0:  f(p) = -1929.5498  
+Iteration 1:  f(p) = -1558.9005  
+Iteration 2:  f(p) = -1555.1889  
+Iteration 3:  f(p) = -1555.1783  
+Iteration 4:  f(p) = -1555.1783  
+Iteration 0:  f(p) =  -1798.953  
+Iteration 1:  f(p) = -1466.2535  
+Iteration 2:  f(p) = -1462.4823  
+Iteration 3:  f(p) = -1462.4705  
+Iteration 4:  f(p) = -1462.4705  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 7 of 20
+Iteration 0:  f(p) = -1884.2677  
+Iteration 1:  f(p) = -1511.7015  
+Iteration 2:  f(p) = -1507.9165  
+Iteration 3:  f(p) = -1507.9062  
+Iteration 4:  f(p) = -1507.9062  
+Iteration 0:  f(p) =  -1844.461  
+Iteration 1:  f(p) = -1510.6978  
+Iteration 2:  f(p) = -1506.7578  
+Iteration 3:  f(p) = -1506.7439  
+Iteration 4:  f(p) = -1506.7439  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 8 of 20
+Iteration 0:  f(p) = -1972.0076  
+Iteration 1:  f(p) = -1609.0167  
+Iteration 2:  f(p) = -1605.0822  
+Iteration 3:  f(p) =  -1605.071  
+Iteration 4:  f(p) =  -1605.071  
+Iteration 0:  f(p) = -1754.2384  
+Iteration 1:  f(p) = -1409.3599  
+Iteration 2:  f(p) = -1405.5127  
+Iteration 3:  f(p) = -1405.4985  
+Iteration 4:  f(p) = -1405.4985  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 9 of 20
+Iteration 0:  f(p) = -1848.2325  
+Iteration 1:  f(p) = -1507.6577  
+Iteration 2:  f(p) = -1503.7678  
+Iteration 3:  f(p) = -1503.7544  
+Iteration 4:  f(p) = -1503.7544  
+Iteration 0:  f(p) = -1877.8733  
+Iteration 1:  f(p) = -1513.0655  
+Iteration 2:  f(p) = -1509.2846  
+Iteration 3:  f(p) = -1509.2739  
+Iteration 4:  f(p) = -1509.2739  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 10 of 20
+repeated time values within panel
+r(451);
+
+end of do-file
+
+r(451);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. xtsum
+
+Variable         |      Mean   Std. dev.       Min        Max |    Observations
+-----------------+--------------------------------------------+----------------
+variable __00002R not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. xtsum
+
+Variable         |      Mean   Std. dev.       Min        Max |    Observations
+-----------------+--------------------------------------------+----------------
+variable __00002R not found
+r(111);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp  kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+Error: must -tsset- data and specify panelvar
+r(5);
+
+end of do-file
+
+r(5);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. tsset ID1979 year
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. xtsum
+
+Variable         |      Mean   Std. dev.       Min        Max |    Observations
+-----------------+--------------------------------------------+----------------
+ID1979   overall |   3160.51    1760.22          1       6365 |     N =   13149
+         between |             1760.755          1       6365 |     n =    1461
+         within  |                    0    3160.51    3160.51 |     T =       9
+                 |                                            |
+year     overall |      1984   2.582087       1980       1988 |     N =   13149
+         between |                    0       1984       1984 |     n =    1461
+         within  |             2.582087       1980       1988 |     T =       9
+                 |                                            |
+lfp      overall |  .7237052   .4471814          0          1 |     N =   13149
+         between |               .34565          0          1 |     n =    1461
+         within  |             .2838484  -.1651837   1.612594 |     T =       9
+                 |                                            |
+laglfp   overall |  .7210434   .4485032          0          1 |     N =   13149
+         between |             .3433685          0          1 |     n =    1461
+         within  |             .2886605  -.1678455   1.609932 |     T =       9
+                 |                                            |
+kids0_2  overall |  .2269374   .4662979          0          4 |     N =   13149
+         between |             .2897915          0   1.555556 |     n =    1461
+         within  |             .3653844  -1.328618   2.671382 |     T =       9
+                 |                                            |
+kids3_5  overall |  .2883109   .5134348          0          3 |     N =   13149
+         between |             .3146209          0   1.555556 |     n =    1461
+         within  |             .4058191  -1.267245   2.621644 |     T =       9
+                 |                                            |
+kids6_17 overall |  1.049662   1.095271          0          7 |     N =   13149
+         between |             .9085494          0   4.888889 |     n =    1461
+         within  |             .6120929  -2.617005   4.160773 |     T =       9
+                 |                                            |
+loghus~e overall |  10.43141   .6898532   5.030412   14.10835 |     N =   13149
+         between |             .5884345   7.653063   13.26372 |     n =    1461
+         within  |             .3603511   6.203182   12.76191 |     T =       9
+                 |                                            |
+age      overall |  3.730033   .9217643        1.8        6.4 |     N =   13149
+         between |             .8838803        2.2   5.944444 |     n =    1461
+         within  |             .2624508   2.707811   4.685588 |     T =       9
+                 |                                            |
+age2     overall |  14.76273   7.413855       3.24      40.96 |     N =   13149
+         between |             7.136404   4.906666   35.39889 |     n =    1461
+         within  |             2.016923   5.238284    22.6094 |     T =       9
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp  kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3725.7589  
+Iteration 1:  f(p) = -3025.2612  
+Iteration 2:  f(p) = -3017.8911  
+Iteration 3:  f(p) = -3017.8696  
+Iteration 4:  f(p) = -3017.8696  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 677)        =  2116.31
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -3017.869625                  Pseudo R2            =   0.2596
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -.7125366    .055839   -12.76   0.000     -.821979   -.6030942
+         kids3_5 |  -.4210284   .0514986    -8.18   0.000    -.5219638   -.3200931
+        kids6_17 |  -.1299965   .0411074    -3.16   0.002    -.2105655   -.0494274
+loghusbandincome |  -.2509321   .0540784    -4.64   0.000    -.3569239   -.1449404
+             age |   2.706445   .6047997     4.47   0.000      1.52106    3.891831
+            age2 |  -.2851654   .0500405    -5.70   0.000     -.383243   -.1870878
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -.0921543   .0424988    -2.17   0.030    -.1754504   -.0088581
+         kids3_5 |  -.0544527   .0256274    -2.12   0.034    -.1046815    -.004224
+        kids6_17 |  -.0168128   .0093091    -1.81   0.071    -.0350583    .0014327
+loghusbandincome |  -.0324537   .0163233    -1.99   0.047    -.0644468   -.0004607
+             age |   .3500319   .1772729     1.97   0.048     .0025834    .6974803
+            age2 |  -.0368812   .0179683    -2.05   0.040    -.0720984    -.001664
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. outtex 
+
+%------- Begin LaTeX code -------%
+
+{
+\begin{table}[htbp]\centering
+ \caption{Estimation results : probitfe
+\label{tabresult probitfe}}
+\begin{tabular}{l c c }\hline\hline 
+\multicolumn{1}{c}
+{\textbf{Variable}}
+ & {\textbf{Coefficient}}  & \textbf{(Std. Err.)} \\ \hline
+kids0\_2  &  -0.713  & (0.056)\\
+kids3\_5  &  -0.421  & (0.051)\\
+kids6\_17  &  -0.130  & (0.041)\\
+loghusbandincome  &  -0.251  & (0.054)\\
+age  &  2.706  & (0.605)\\
+age2  &  -0.285  & (0.050)\\
+\hline
+\end{tabular}
+\end{table}
+}
+
+%------- End LaTeX code -------%
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. logitfe lfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3723.9912  
+Iteration 1:  f(p) = -3032.5709  
+Iteration 2:  f(p) =   -3015.92  
+Iteration 3:  f(p) = -3015.8815  
+Iteration 4:  f(p) = -3015.8815  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 677)        =  2120.29
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -3015.881486                  Pseudo R2            =   0.2601
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -1.235537   .0986425   -12.53   0.000    -1.428873   -1.042202
+         kids3_5 |  -.7303787    .089811    -8.13   0.000     -.906405   -.5543524
+        kids6_17 |  -.2349146    .071689    -3.28   0.001    -.3754223   -.0944068
+loghusbandincome |  -.4307485   .0946167    -4.55   0.000    -.6161939   -.2453032
+             age |   4.769568   1.037169     4.60   0.000     2.736754    6.802382
+            age2 |  -.5077233   .0870464    -5.83   0.000    -.6783311   -.3371155
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+         kids0_2 |  -.0934963   .0431561    -2.17   0.030    -.1780807    -.008912
+         kids3_5 |  -.0552697   .0260298    -2.12   0.034    -.1062871   -.0042522
+        kids6_17 |  -.0177766   .0097336    -1.83   0.068    -.0368541    .0013009
+loghusbandincome |  -.0325959   .0164579    -1.98   0.048    -.0648527    -.000339
+             age |   .3609257   .1818899     1.98   0.047     .0044281    .7174233
+            age2 |  -.0384207   .0186677    -2.06   0.040    -.0750088   -.0018327
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, l2
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing analytical correction
+Iteration 0:  f(p) = -9299.5666  
+Iteration 1:  f(p) = -3456.6705  
+Iteration 2:  f(p) =  -2895.361  
+Iteration 3:  f(p) = -2891.5263  
+Iteration 4:  f(p) = -2891.5194  
+Iteration 5:  f(p) = -2891.5194  
+
+Analytical bias-correction
+Type of correction: individual and time effects
+-----------------------------------------------
+Trimming parameter = 2
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.082034   .0428824    25.23   0.000     .9979858    1.166082
+         kids0_2 |  -.4454395   .0575942    -7.73   0.000    -.5583221   -.3325568
+         kids3_5 |  -.2010975   .0533896    -3.77   0.000    -.3057392   -.0964559
+        kids6_17 |  -.0524242   .0425297    -1.23   0.218    -.1357808    .0309324
+loghusbandincome |  -.2057621   .0553458    -3.72   0.000    -.3142378   -.0972864
+             age |   1.854205   .6273995     2.96   0.003     .6245242    3.083885
+            age2 |  -.1859307   .0520705    -3.57   0.000    -.2879871   -.0838744
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .2071913   .0069959    29.62   0.000     .1934796    .2209031
+         kids0_2 |   -.072473   .0316272    -2.29   0.022    -.1344611   -.0104849
+         kids3_5 |  -.0327186   .0174462    -1.88   0.061    -.0669125    .0014754
+        kids6_17 |  -.0085294   .0066359    -1.29   0.199    -.0215356    .0044767
+loghusbandincome |  -.0334775   .0155984    -2.15   0.032    -.0640498   -.0029051
+             age |    .301679   .1508693     2.00   0.046     .0059806    .5973773
+            age2 |  -.0302509   .0149994    -2.02   0.044    -.0596491   -.0008527
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(20) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 20
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 20
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 20
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 20
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 20
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 20
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 20
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 20
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 20
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 10 of 20
+repeated time values within panel
+r(451);
+
+end of do-file
+
+r(451);
+
+. isid ID1979 year 
+
+. duplicates report ID1979 year
+
+Duplicates in terms of ID1979 year
+
+--------------------------------------
+   Copies | Observations       Surplus
+----------+---------------------------
+        1 |        13149             0
+--------------------------------------
+
+. set seed 14383
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(20) i
+Error: must -tsset- data and specify panelvar
+r(5);
+
+. 
+. tsset ID1979 year
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, l2
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing analytical correction
+Iteration 0:  f(p) = -9299.5666  
+Iteration 1:  f(p) = -3456.6705  
+Iteration 2:  f(p) =  -2895.361  
+Iteration 3:  f(p) = -2891.5263  
+Iteration 4:  f(p) = -2891.5194  
+Iteration 5:  f(p) = -2891.5194  
+
+Analytical bias-correction
+Type of correction: individual and time effects
+-----------------------------------------------
+Trimming parameter = 2
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.082034   .0428824    25.23   0.000     .9979858    1.166082
+         kids0_2 |  -.4454395   .0575942    -7.73   0.000    -.5583221   -.3325568
+         kids3_5 |  -.2010975   .0533896    -3.77   0.000    -.3057392   -.0964559
+        kids6_17 |  -.0524242   .0425297    -1.23   0.218    -.1357808    .0309324
+loghusbandincome |  -.2057621   .0553458    -3.72   0.000    -.3142378   -.0972864
+             age |   1.854205   .6273995     2.96   0.003     .6245242    3.083885
+            age2 |  -.1859307   .0520705    -3.57   0.000    -.2879871   -.0838744
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .2071913   .0069959    29.62   0.000     .1934796    .2209031
+         kids0_2 |   -.072473   .0316272    -2.29   0.022    -.1344611   -.0104849
+         kids3_5 |  -.0327186   .0174462    -1.88   0.061    -.0669125    .0014754
+        kids6_17 |  -.0085294   .0066359    -1.29   0.199    -.0215356    .0044767
+loghusbandincome |  -.0334775   .0155984    -2.15   0.032    -.0640498   -.0029051
+             age |    .301679   .1508693     2.00   0.046     .0059806    .5973773
+            age2 |  -.0302509   .0149994    -2.02   0.044    -.0596491   -.0008527
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(20) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 20
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 20
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 20
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 20
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 20
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 20
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 20
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 20
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 20
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 10 of 20
+repeated time values within panel
+r(451);
+
+end of do-file
+
+r(451);
+
+. ssc install probitfe, replace
+checking probitfe consistency and verifying not already installed...
+installing into /Users/mcerman/Library/Application Support/Stata/ado/plus/...
+installation complete.
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(20) i
+Error: must -tsset- data and specify panelvar
+r(5);
+
+. xtset ID1979 year 
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(20) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 20
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 20
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 20
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 20
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 20
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 20
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 20
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 20
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 20
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 10 of 20
+repeated time values within panel
+r(451);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. 
+. *-----------------------------------------------------------------------------*
+. cd "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/14.383/
+> 14.383_pset5/code/problem1"
+/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/14.383/14.383
+> _pset5/code/problem1
+
+. *-----------------------------------------------------------------------------*
+. 
+. * Install code to produce nice tables
+. 
+. ssc install outtex, replace
+checking outtex consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. ssc install sutex, replace
+checking sutex consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. 
+. * Add to the folder where the probitfe and logitfe ado files are to the adopath
+. 
+. adopath + "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/
+> 14.383/14.383_pset5/code/problem1"
+  [1]  (BASE)      "/Applications/StataNow/ado/base/"
+  [2]  (SITE)      "/Applications/StataNow/ado/site/"
+  [3]              "."
+  [4]  (PERSONAL)  "/Users/mcerman/Documents/Stata/ado/personal/"
+  [5]  (PLUS)      "/Users/mcerman/Library/Application Support/Stata/ado/plus/"
+  [6]  (OLDPLACE)  "~/ado/"
+  [7]              "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2
+>  Class/14.383/14.383_pset5/code/problem1"
+
+. 
+. 
+. set more off
+
+. 
+. use "PSID-1980-1988.dta", clear
+
+. *cd programs/LFP
+. 
+. * Put labels to variables
+. 
+. label var lfp "LFP"
+
+. label var laglfp "Lagged LFP"
+
+. label var kids0_2 "Kids 0-2"
+
+. label var kids3_5 "Kids 3-5"
+
+. label var kids6_17 "Kids 6-17"
+
+. label var loghusbandincome "Log husband income in 1995 $1000"
+
+. label var age "Age"
+
+. label var age2 "Age squared"
+
+. 
+. * Specify that the data set is a panel and the variables for the dimensions
+. 
+. tsset ID1979 year
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. 
+. * Descriptive Statistics
+. 
+. sum
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      ID1979 |     13,149     3160.51     1760.22          1       6365
+        year |     13,149        1984    2.582087       1980       1988
+         lfp |     13,149    .7237052    .4471814          0          1
+      laglfp |     13,149    .7210434    .4485032          0          1
+     kids0_2 |     13,149    .2269374    .4662979          0          4
+-------------+---------------------------------------------------------
+     kids3_5 |     13,149    .2883109    .5134348          0          3
+    kids6_17 |     13,149    1.049662    1.095271          0          7
+loghusband~e |     13,149    10.43141    .6898532   5.030412   14.10835
+         age |     13,149    3.730033    .9217643        1.8        6.4
+        age2 |     13,149    14.76273    7.413855       3.24      40.96
+
+. 
+. *
+. 
+. 
+. *3. Dynamic probit model with individual and time effects
+. 
+. *3.a. No correction
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+. 
+. *3.b. Analytical correction, 2-lags
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, l2
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing analytical correction
+Iteration 0:  f(p) = -9299.5666  
+Iteration 1:  f(p) = -3456.6705  
+Iteration 2:  f(p) =  -2895.361  
+Iteration 3:  f(p) = -2891.5263  
+Iteration 4:  f(p) = -2891.5194  
+Iteration 5:  f(p) = -2891.5194  
+
+Analytical bias-correction
+Type of correction: individual and time effects
+-----------------------------------------------
+Trimming parameter = 2
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.082034   .0428824    25.23   0.000     .9979858    1.166082
+         kids0_2 |  -.4454395   .0575942    -7.73   0.000    -.5583221   -.3325568
+         kids3_5 |  -.2010975   .0533896    -3.77   0.000    -.3057392   -.0964559
+        kids6_17 |  -.0524242   .0425297    -1.23   0.218    -.1357808    .0309324
+loghusbandincome |  -.2057621   .0553458    -3.72   0.000    -.3142378   -.0972864
+             age |   1.854205   .6273995     2.96   0.003     .6245242    3.083885
+            age2 |  -.1859307   .0520705    -3.57   0.000    -.2879871   -.0838744
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .2071913   .0069959    29.62   0.000     .1934796    .2209031
+         kids0_2 |   -.072473   .0316272    -2.29   0.022    -.1344611   -.0104849
+         kids3_5 |  -.0327186   .0174462    -1.88   0.061    -.0669125    .0014754
+        kids6_17 |  -.0085294   .0066359    -1.29   0.199    -.0215356    .0044767
+loghusbandincome |  -.0334775   .0155984    -2.15   0.032    -.0640498   -.0029051
+             age |    .301679   .1508693     2.00   0.046     .0059806    .5973773
+            age2 |  -.0302509   .0149994    -2.02   0.044    -.0596491   -.0008527
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(10) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 10
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 10
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 10
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 10
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 10
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 10
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 10
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 10
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 10
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 10 of 10
+repeated time values within panel
+r(451);
+
+end of do-file
+
+r(451);
+
+. sum year
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+        year |     13,149        1984    2.582087       1980       1988
+
+. help probitfe
+
+. xtset ID1979 year 
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 i t mul(20)
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 20
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 20
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 20
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 20
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 20
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 20
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 20
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 20
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 20
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 10 of 20
+repeated time values within panel
+r(451);
+
+. xtset ID1979 year 
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 i mul(9)
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 9
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 9
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 9
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 9
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 9
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 9
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 9
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 9
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 9
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Split-panel jackknife in both dimensions
+Type of correction: individual and time effects
+-----------------------------------------------
+9 multiple partitions in the cross-section dimension
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.261486   .0428824    29.42   0.000     1.177438    1.345534
+         kids0_2 |  -.6022003   .0575942   -10.46   0.000     -.715083   -.4893177
+         kids3_5 |  -.3438253   .0533896    -6.44   0.000     -.448467   -.2391836
+        kids6_17 |  -.1332527   .0425297    -3.13   0.002    -.2166093   -.0498961
+loghusbandincome |  -.3284041   .0553458    -5.93   0.000    -.4368798   -.2199284
+             age |   1.537308   .6273995     2.45   0.014      .307628    2.766989
+            age2 |  -.1713482   .0520705    -3.29   0.001    -.2734045   -.0692918
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1897801   .0069959    27.13   0.000     .1760683    .2034918
+         kids0_2 |  -.0848885   .0316272    -2.68   0.007    -.1468766   -.0229005
+         kids3_5 |  -.0473766   .0174462    -2.72   0.007    -.0815705   -.0131826
+        kids6_17 |  -.0157701   .0066359    -2.38   0.017    -.0287762   -.0027639
+loghusbandincome |  -.0433119   .0155984    -2.78   0.005    -.0738842   -.0127396
+             age |   .2732656   .1508693     1.81   0.070    -.0224328     .568964
+            age2 |  -.0289259   .0149994    -1.93   0.054    -.0583242    .0004723
+----------------------------------------------------------------------------------
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 i mul(5)
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 5
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 5
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 5
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 5
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 5
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Split-panel jackknife in both dimensions
+Type of correction: individual and time effects
+-----------------------------------------------
+5 multiple partitions in the cross-section dimension
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.261114   .0428824    29.41   0.000     1.177066    1.345162
+         kids0_2 |  -.6029473   .0575942   -10.47   0.000      -.71583   -.4900647
+         kids3_5 |   -.341733   .0533896    -6.40   0.000    -.4463747   -.2370913
+        kids6_17 |  -.1312747   .0425297    -3.09   0.002    -.2146313    -.047918
+loghusbandincome |  -.3272012   .0553458    -5.91   0.000    -.4356769   -.2187255
+             age |   1.520111   .6273995     2.42   0.015     .2904305    2.749791
+            age2 |  -.1661558   .0520705    -3.19   0.001    -.2682122   -.0640995
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |    .189911   .0069959    27.15   0.000     .1761992    .2036228
+         kids0_2 |  -.0850717   .0316272    -2.69   0.007    -.1470598   -.0230837
+         kids3_5 |  -.0472951   .0174462    -2.71   0.007     -.081489   -.0131011
+        kids6_17 |  -.0156501   .0066359    -2.36   0.018    -.0286562   -.0026439
+loghusbandincome |  -.0432787   .0155984    -2.77   0.006     -.073851   -.0127064
+             age |   .2721911   .1508693     1.80   0.071    -.0235073    .5678895
+            age2 |  -.0284575   .0149994    -1.90   0.058    -.0578557    .0009407
+----------------------------------------------------------------------------------
+
+. set seed 2
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 i mul(10)
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 10
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 10
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 10
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 10
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 10
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 6 of 10
+Iteration 0:  f(p) = -1889.1739  
+Iteration 1:  f(p) =  -1485.746  
+Iteration 2:  f(p) = -1481.6621  
+Iteration 3:  f(p) =  -1481.647  
+Iteration 4:  f(p) =  -1481.647  
+Iteration 0:  f(p) = -1754.5788  
+Iteration 1:  f(p) = -1385.9487  
+Iteration 2:  f(p) = -1381.2841  
+Iteration 3:  f(p) = -1381.2644  
+Iteration 4:  f(p) = -1381.2644  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 7 of 10
+Iteration 0:  f(p) = -1846.6423  
+Iteration 1:  f(p) = -1442.7884  
+Iteration 2:  f(p) = -1438.3374  
+Iteration 3:  f(p) = -1438.3184  
+Iteration 4:  f(p) = -1438.3184  
+Iteration 0:  f(p) = -1796.1366  
+Iteration 1:  f(p) = -1423.9642  
+Iteration 2:  f(p) = -1419.3443  
+Iteration 3:  f(p) =  -1419.325  
+Iteration 4:  f(p) =  -1419.325  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 8 of 10
+Iteration 0:  f(p) = -1916.4552  
+Iteration 1:  f(p) = -1509.4255  
+Iteration 2:  f(p) = -1504.8645  
+Iteration 3:  f(p) = -1504.8454  
+Iteration 4:  f(p) = -1504.8454  
+Iteration 0:  f(p) = -1723.5398  
+Iteration 1:  f(p) = -1353.1585  
+Iteration 2:  f(p) = -1348.6997  
+Iteration 3:  f(p) = -1348.6806  
+Iteration 4:  f(p) = -1348.6806  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 9 of 10
+Iteration 0:  f(p) = -1807.4196  
+Iteration 1:  f(p) = -1433.5245  
+Iteration 2:  f(p) = -1429.0335  
+Iteration 3:  f(p) = -1429.0127  
+Iteration 4:  f(p) = -1429.0127  
+Iteration 0:  f(p) = -1834.0391  
+Iteration 1:  f(p) = -1433.7091  
+Iteration 2:  f(p) = -1429.1502  
+Iteration 3:  f(p) = -1429.1305  
+Iteration 4:  f(p) = -1429.1305  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 10 of 10
+repeated time values within panel
+r(451);
+
+. xtset ID1979 year 
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. probitfe lfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 i mul(10)
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3725.7589  
+Iteration 1:  f(p) = -3025.2612  
+Iteration 2:  f(p) = -3017.8911  
+Iteration 3:  f(p) = -3017.8696  
+Iteration 4:  f(p) = -3017.8696  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) = -1859.7303  
+Iteration 1:  f(p) = -1512.7886  
+Iteration 2:  f(p) = -1509.0892  
+Iteration 3:  f(p) = -1509.0793  
+Iteration 4:  f(p) = -1509.0793  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) =  -1869.263  
+Iteration 1:  f(p) = -1508.1026  
+Iteration 2:  f(p) = -1504.0574  
+Iteration 3:  f(p) = -1504.0417  
+Iteration 4:  f(p) = -1504.0417  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 1 of 10
+Iteration 0:  f(p) = -2001.4293  
+Iteration 1:  f(p) = -1638.8021  
+Iteration 2:  f(p) = -1635.2206  
+Iteration 3:  f(p) = -1635.2127  
+Iteration 4:  f(p) = -1635.2127  
+Iteration 0:  f(p) =  -1720.489  
+Iteration 1:  f(p) = -1378.5773  
+Iteration 2:  f(p) = -1374.5391  
+Iteration 3:  f(p) =  -1374.523  
+Iteration 4:  f(p) =  -1374.523  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 2 of 10
+Iteration 0:  f(p) = -1961.4807  
+Iteration 1:  f(p) = -1598.9272  
+Iteration 2:  f(p) = -1595.3068  
+Iteration 3:  f(p) = -1595.2976  
+Iteration 4:  f(p) = -1595.2976  
+Iteration 0:  f(p) = -1758.8251  
+Iteration 1:  f(p) = -1414.2805  
+Iteration 2:  f(p) = -1410.1383  
+Iteration 3:  f(p) = -1410.1217  
+Iteration 4:  f(p) = -1410.1217  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 3 of 10
+Iteration 0:  f(p) = -1924.7276  
+Iteration 1:  f(p) = -1536.8824  
+Iteration 2:  f(p) = -1532.3352  
+Iteration 3:  f(p) =  -1532.317  
+Iteration 4:  f(p) =  -1532.317  
+Iteration 0:  f(p) = -1796.0444  
+Iteration 1:  f(p) = -1478.0029  
+Iteration 2:  f(p) = -1474.6958  
+Iteration 3:  f(p) = -1474.6881  
+Iteration 4:  f(p) = -1474.6881  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 4 of 10
+Iteration 0:  f(p) =  -1901.951  
+Iteration 1:  f(p) = -1547.7697  
+Iteration 2:  f(p) = -1544.0624  
+Iteration 3:  f(p) = -1544.0518  
+Iteration 4:  f(p) = -1544.0518  
+Iteration 0:  f(p) = -1820.3262  
+Iteration 1:  f(p) = -1469.1265  
+Iteration 2:  f(p) = -1464.9008  
+Iteration 3:  f(p) = -1464.8851  
+Iteration 4:  f(p) = -1464.8851  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 5 of 10
+Iteration 0:  f(p) = -1835.2306  
+Iteration 1:  f(p) = -1484.6384  
+Iteration 2:  f(p) = -1481.0413  
+Iteration 3:  f(p) = -1481.0302  
+Iteration 4:  f(p) = -1481.0302  
+Iteration 0:  f(p) = -1883.7192  
+Iteration 1:  f(p) = -1525.3888  
+Iteration 2:  f(p) = -1520.8381  
+Iteration 3:  f(p) = -1520.8185  
+Iteration 4:  f(p) = -1520.8185  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 6 of 10
+Iteration 0:  f(p) = -1929.5498  
+Iteration 1:  f(p) = -1558.9005  
+Iteration 2:  f(p) = -1555.1889  
+Iteration 3:  f(p) = -1555.1783  
+Iteration 4:  f(p) = -1555.1783  
+Iteration 0:  f(p) =  -1798.953  
+Iteration 1:  f(p) = -1466.2535  
+Iteration 2:  f(p) = -1462.4823  
+Iteration 3:  f(p) = -1462.4705  
+Iteration 4:  f(p) = -1462.4705  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 7 of 10
+Iteration 0:  f(p) = -1884.2677  
+Iteration 1:  f(p) = -1511.7015  
+Iteration 2:  f(p) = -1507.9165  
+Iteration 3:  f(p) = -1507.9062  
+Iteration 4:  f(p) = -1507.9062  
+Iteration 0:  f(p) =  -1844.461  
+Iteration 1:  f(p) = -1510.6978  
+Iteration 2:  f(p) = -1506.7578  
+Iteration 3:  f(p) = -1506.7439  
+Iteration 4:  f(p) = -1506.7439  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 8 of 10
+Iteration 0:  f(p) = -1972.0076  
+Iteration 1:  f(p) = -1609.0167  
+Iteration 2:  f(p) = -1605.0822  
+Iteration 3:  f(p) =  -1605.071  
+Iteration 4:  f(p) =  -1605.071  
+Iteration 0:  f(p) = -1754.2384  
+Iteration 1:  f(p) = -1409.3599  
+Iteration 2:  f(p) = -1405.5127  
+Iteration 3:  f(p) = -1405.4985  
+Iteration 4:  f(p) = -1405.4985  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 9 of 10
+Iteration 0:  f(p) = -1848.2325  
+Iteration 1:  f(p) = -1507.6577  
+Iteration 2:  f(p) = -1503.7678  
+Iteration 3:  f(p) = -1503.7544  
+Iteration 4:  f(p) = -1503.7544  
+Iteration 0:  f(p) = -1877.8733  
+Iteration 1:  f(p) = -1513.0655  
+Iteration 2:  f(p) = -1509.2846  
+Iteration 3:  f(p) = -1509.2739  
+Iteration 4:  f(p) = -1509.2739  
+Iteration 0:  f(p) = -1655.8281  
+Iteration 1:  f(p) = -1370.4195  
+Iteration 2:  f(p) = -1368.5475  
+Iteration 3:  f(p) = -1368.5467  
+Iteration 4:  f(p) = -1368.5467  
+Iteration 0:  f(p) = -1375.9606  
+Iteration 1:  f(p) = -1169.6606  
+Iteration 2:  f(p) =  -1168.318  
+Iteration 3:  f(p) = -1168.3179  
+
+Computing fixed-effects estimator in multiple partition 10 of 10
+repeated time values within panel
+r(451);
+
+. xtset ID1979 year 
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. viewsource probitfe.ado
+
+. do "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/14.383/
+> 14.383_pset5/code/problem1/fix_simplified.do"
+
+. 
+. *------------------------------------------------------------------------------------------------*
+. *  This is an empirical application of nonlineal panel data methods to the effect of fertility on
+. *  female labor force participation of Fernandez-Val (2009)
+. *  
+. *  14.382 L10 MIT.  V. Chernozhukov and I. Fernandez-Val
+. *
+. * Data source: PSID 1979-1988, N = 1,461 women, T = 9 years (1979-1988)
+. * first year is lost to construct lagged dependent variable
+. *
+. * Description of the data: the sample selection follows
+. *
+. * Ivan Fernandez-Val, "Fixed effects estimation of structural parameters and marginal effects in 
+. * panel probit models," Journal of Econometrics, Elsevier, vol. 150(1), pages 71-85, May.
+. *
+. * The variables in the data set include:
+. *
+. * ID1979 = "woman identifier"
+. * year = "year"
+. * lfp = "= 1 if woman participates in labor force"
+. * laglfp = "lag of lfp"
+. * kids0_2 = "number of children of ages <= 2 years"
+. * kids3_5 = "number of children of ages > 2 years and < 6 years"
+. * kids6_17 = "number of children of ages > 5 years and < 18 years"
+. * loghusbandincome = "log of husband income ($1000 of 1995)"
+. * age = "age"
+. * age2 = "age squared"
+. *------------------------------------------------------------------------------------------------*
+. 
+. 
+. *-----------------------------------------------------------------------------*
+. cd "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/14.383/
+> 14.383_pset5/code/problem1"
+/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/14.383/14.383
+> _pset5/code/problem1
+
+. *-----------------------------------------------------------------------------*
+. 
+. * Install code to produce nice tables
+. 
+. ssc install outtex, replace
+checking outtex consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. ssc install sutex, replace
+checking sutex consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. 
+. * Add to the folder where the probitfe and logitfe ado files are to the adopath
+. 
+. adopath + "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2 Class/
+> 14.383/14.383_pset5/code/problem1"
+  [1]  (BASE)      "/Applications/StataNow/ado/base/"
+  [2]  (SITE)      "/Applications/StataNow/ado/site/"
+  [3]              "."
+  [4]  (PERSONAL)  "/Users/mcerman/Documents/Stata/ado/personal/"
+  [5]  (PLUS)      "/Users/mcerman/Library/Application Support/Stata/ado/plus/"
+  [6]  (OLDPLACE)  "~/ado/"
+  [7]              "/Users/mcerman/Library/CloudStorage/OneDrive-MassachusettsInstituteofTechnology/Documents/2
+>  Class/14.383/14.383_pset5/code/problem1"
+
+. 
+. 
+. set more off
+
+. 
+. use "PSID-1980-1988.dta", clear
+
+. *cd programs/LFP
+. 
+. * Put labels to variables
+. 
+. label var lfp "LFP"
+
+. label var laglfp "Lagged LFP"
+
+. label var kids0_2 "Kids 0-2"
+
+. label var kids3_5 "Kids 3-5"
+
+. label var kids6_17 "Kids 6-17"
+
+. label var loghusbandincome "Log husband income in 1995 $1000"
+
+. label var age "Age"
+
+. label var age2 "Age squared"
+
+. 
+. * Specify that the data set is a panel and the variables for the dimensions
+. 
+. tsset ID1979 year
+
+Panel variable: ID1979 (strongly balanced)
+ Time variable: year, 1980 to 1988
+         Delta: 1 unit
+
+. 
+. * Descriptive Statistics
+. 
+. sum
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      ID1979 |     13,149     3160.51     1760.22          1       6365
+        year |     13,149        1984    2.582087       1980       1988
+         lfp |     13,149    .7237052    .4471814          0          1
+      laglfp |     13,149    .7210434    .4485032          0          1
+     kids0_2 |     13,149    .2269374    .4662979          0          4
+-------------+---------------------------------------------------------
+     kids3_5 |     13,149    .2883109    .5134348          0          3
+    kids6_17 |     13,149    1.049662    1.095271          0          7
+loghusband~e |     13,149    10.43141    .6898532   5.030412   14.10835
+         age |     13,149    3.730033    .9217643        1.8        6.4
+        age2 |     13,149    14.76273    7.413855       3.24      40.96
+
+. 
+. *
+. 
+. 
+. *3. Dynamic probit model with individual and time effects
+. 
+. *3.a. No correction
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+. 
+. *3.b. Analytical correction, 2-lags
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, l2
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing analytical correction
+Iteration 0:  f(p) = -9299.5666  
+Iteration 1:  f(p) = -3456.6705  
+Iteration 2:  f(p) =  -2895.361  
+Iteration 3:  f(p) = -2891.5263  
+Iteration 4:  f(p) = -2891.5194  
+Iteration 5:  f(p) = -2891.5194  
+
+Analytical bias-correction
+Type of correction: individual and time effects
+-----------------------------------------------
+Trimming parameter = 2
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.082034   .0428824    25.23   0.000     .9979858    1.166082
+         kids0_2 |  -.4454395   .0575942    -7.73   0.000    -.5583221   -.3325568
+         kids3_5 |  -.2010975   .0533896    -3.77   0.000    -.3057392   -.0964559
+        kids6_17 |  -.0524242   .0425297    -1.23   0.218    -.1357808    .0309324
+loghusbandincome |  -.2057621   .0553458    -3.72   0.000    -.3142378   -.0972864
+             age |   1.854205   .6273995     2.96   0.003     .6245242    3.083885
+            age2 |  -.1859307   .0520705    -3.57   0.000    -.2879871   -.0838744
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .2071913   .0069959    29.62   0.000     .1934796    .2209031
+         kids0_2 |   -.072473   .0316272    -2.29   0.022    -.1344611   -.0104849
+         kids3_5 |  -.0327186   .0174462    -1.88   0.061    -.0669125    .0014754
+        kids6_17 |  -.0085294   .0066359    -1.29   0.199    -.0215356    .0044767
+loghusbandincome |  -.0334775   .0155984    -2.15   0.032    -.0640498   -.0029051
+             age |    .301679   .1508693     2.00   0.046     .0059806    .5973773
+            age2 |  -.0302509   .0149994    -2.02   0.044    -.0596491   -.0008527
+----------------------------------------------------------------------------------
+
+. 
+. 
+. *3.c. Jackknife correction, split in time series and cross section
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(5) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 5
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 5
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 5
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 5
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 5
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Split-panel jackknife in both dimensions
+Type of correction: individual and time effects
+-----------------------------------------------
+5 multiple partitions in the cross-section dimension
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.261114   .0428824    29.41   0.000     1.177066    1.345162
+         kids0_2 |  -.6029473   .0575942   -10.47   0.000      -.71583   -.4900647
+         kids3_5 |   -.341733   .0533896    -6.40   0.000    -.4463747   -.2370913
+        kids6_17 |  -.1312747   .0425297    -3.09   0.002    -.2146313    -.047918
+loghusbandincome |  -.3272012   .0553458    -5.91   0.000    -.4356769   -.2187255
+             age |   1.520111   .6273995     2.42   0.015     .2904305    2.749791
+            age2 |  -.1661558   .0520705    -3.19   0.001    -.2682122   -.0640995
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |    .189911   .0069959    27.15   0.000     .1761992    .2036228
+         kids0_2 |  -.0850717   .0316272    -2.69   0.007    -.1470598   -.0230837
+         kids3_5 |  -.0472951   .0174462    -2.71   0.007     -.081489   -.0131011
+        kids6_17 |  -.0156501   .0066359    -2.36   0.018    -.0286562   -.0026439
+loghusbandincome |  -.0432787   .0155984    -2.77   0.006     -.073851   -.0127064
+             age |   .2721911   .1508693     1.80   0.071    -.0235073    .5678895
+            age2 |  -.0284575   .0149994    -1.90   0.058    -.0578557    .0009407
+----------------------------------------------------------------------------------
+
+. 
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. eststo clear
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. eststo FE: probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. eststo ABC: probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, l2
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing analytical correction
+Iteration 0:  f(p) = -9299.5666  
+Iteration 1:  f(p) = -3456.6705  
+Iteration 2:  f(p) =  -2895.361  
+Iteration 3:  f(p) = -2891.5263  
+Iteration 4:  f(p) = -2891.5194  
+Iteration 5:  f(p) = -2891.5194  
+
+Analytical bias-correction
+Type of correction: individual and time effects
+-----------------------------------------------
+Trimming parameter = 2
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.082034   .0428824    25.23   0.000     .9979858    1.166082
+         kids0_2 |  -.4454395   .0575942    -7.73   0.000    -.5583221   -.3325568
+         kids3_5 |  -.2010975   .0533896    -3.77   0.000    -.3057392   -.0964559
+        kids6_17 |  -.0524242   .0425297    -1.23   0.218    -.1357808    .0309324
+loghusbandincome |  -.2057621   .0553458    -3.72   0.000    -.3142378   -.0972864
+             age |   1.854205   .6273995     2.96   0.003     .6245242    3.083885
+            age2 |  -.1859307   .0520705    -3.57   0.000    -.2879871   -.0838744
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .2071913   .0069959    29.62   0.000     .1934796    .2209031
+         kids0_2 |   -.072473   .0316272    -2.29   0.022    -.1344611   -.0104849
+         kids3_5 |  -.0327186   .0174462    -1.88   0.061    -.0669125    .0014754
+        kids6_17 |  -.0085294   .0066359    -1.29   0.199    -.0215356    .0044767
+loghusbandincome |  -.0334775   .0155984    -2.15   0.032    -.0640498   -.0029051
+             age |    .301679   .1508693     2.00   0.046     .0059806    .5973773
+            age2 |  -.0302509   .0149994    -2.02   0.044    -.0596491   -.0008527
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. eststo JBC: probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, jack ss2 mul(5) i
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Computing fixed-effects estimator in subpanel 1 of 4
+Iteration 0:  f(p) =  -1822.001  
+Iteration 1:  f(p) = -1444.6485  
+Iteration 2:  f(p) = -1440.5964  
+Iteration 3:  f(p) = -1440.5805  
+Iteration 4:  f(p) = -1440.5805  
+
+Computing fixed-effects estimator in subpanel 2 of 4
+Iteration 0:  f(p) = -1821.1311  
+Iteration 1:  f(p) = -1420.5554  
+Iteration 2:  f(p) = -1415.4812  
+Iteration 3:  f(p) = -1415.4619  
+Iteration 4:  f(p) = -1415.4619  
+
+Computing fixed-effects estimator in subpanel 3 of 4
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+
+Computing fixed-effects estimator in subpanel 4 of 4
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 1 of 5
+Iteration 0:  f(p) = -1955.4015  
+Iteration 1:  f(p) = -1556.0878  
+Iteration 2:  f(p) = -1552.0191  
+Iteration 3:  f(p) = -1552.0043  
+Iteration 4:  f(p) = -1552.0043  
+Iteration 0:  f(p) =  -1681.312  
+Iteration 1:  f(p) =  -1307.285  
+Iteration 2:  f(p) = -1302.4228  
+Iteration 3:  f(p) = -1302.4049  
+Iteration 4:  f(p) = -1302.4049  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 2 of 5
+Iteration 0:  f(p) = -1914.8369  
+Iteration 1:  f(p) = -1515.3031  
+Iteration 2:  f(p) = -1511.2124  
+Iteration 3:  f(p) = -1511.1945  
+Iteration 4:  f(p) = -1511.1945  
+Iteration 0:  f(p) = -1721.0487  
+Iteration 1:  f(p) = -1345.2915  
+Iteration 2:  f(p) = -1340.4014  
+Iteration 3:  f(p) = -1340.3819  
+Iteration 4:  f(p) = -1340.3819  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 3 of 5
+Iteration 0:  f(p) = -1888.5376  
+Iteration 1:  f(p) = -1471.8574  
+Iteration 2:  f(p) = -1466.7256  
+Iteration 3:  f(p) = -1466.7054  
+Iteration 4:  f(p) = -1466.7054  
+Iteration 0:  f(p) = -1747.4742  
+Iteration 1:  f(p) = -1389.6038  
+Iteration 2:  f(p) = -1385.7222  
+Iteration 3:  f(p) = -1385.7053  
+Iteration 4:  f(p) = -1385.7053  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 4 of 5
+Iteration 0:  f(p) = -1857.1324  
+Iteration 1:  f(p) = -1465.8368  
+Iteration 2:  f(p) = -1461.3124  
+Iteration 3:  f(p) = -1461.2906  
+Iteration 4:  f(p) = -1461.2906  
+Iteration 0:  f(p) = -1779.3368  
+Iteration 1:  f(p) =  -1396.007  
+Iteration 2:  f(p) = -1391.3067  
+Iteration 3:  f(p) =  -1391.289  
+Iteration 4:  f(p) =  -1391.289  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Computing fixed-effects estimator in multiple partition 5 of 5
+Iteration 0:  f(p) = -1790.3496  
+Iteration 1:  f(p) = -1403.3546  
+Iteration 2:  f(p) = -1399.1691  
+Iteration 3:  f(p) = -1399.1506  
+Iteration 4:  f(p) = -1399.1506  
+Iteration 0:  f(p) = -1843.8241  
+Iteration 1:  f(p) = -1453.1315  
+Iteration 2:  f(p) = -1447.9434  
+Iteration 3:  f(p) = -1447.9248  
+Iteration 4:  f(p) = -1447.9248  
+Iteration 0:  f(p) = -1654.8312  
+Iteration 1:  f(p) = -1368.6211  
+Iteration 2:  f(p) = -1366.7554  
+Iteration 3:  f(p) = -1366.7547  
+Iteration 4:  f(p) = -1366.7547  
+Iteration 0:  f(p) = -1367.3947  
+Iteration 1:  f(p) = -1154.7881  
+Iteration 2:  f(p) = -1153.5372  
+Iteration 3:  f(p) =  -1153.537  
+Iteration 4:  f(p) =  -1153.537  
+
+Split-panel jackknife in both dimensions
+Type of correction: individual and time effects
+-----------------------------------------------
+5 multiple partitions in the cross-section dimension
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.261114   .0428824    29.41   0.000     1.177066    1.345162
+         kids0_2 |  -.6029473   .0575942   -10.47   0.000      -.71583   -.4900647
+         kids3_5 |   -.341733   .0533896    -6.40   0.000    -.4463747   -.2370913
+        kids6_17 |  -.1312747   .0425297    -3.09   0.002    -.2146313    -.047918
+loghusbandincome |  -.3272012   .0553458    -5.91   0.000    -.4356769   -.2187255
+             age |   1.520111   .6273995     2.42   0.015     .2904305    2.749791
+            age2 |  -.1661558   .0520705    -3.19   0.001    -.2682122   -.0640995
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |    .189911   .0069959    27.15   0.000     .1761992    .2036228
+         kids0_2 |  -.0850717   .0316272    -2.69   0.007    -.1470598   -.0230837
+         kids3_5 |  -.0472951   .0174462    -2.71   0.007     -.081489   -.0131011
+        kids6_17 |  -.0156501   .0066359    -2.36   0.018    -.0286562   -.0026439
+loghusbandincome |  -.0432787   .0155984    -2.77   0.006     -.073851   -.0127064
+             age |   .2721911   .1508693     1.80   0.071    -.0235073    .5678895
+            age2 |  -.0284575   .0149994    -1.90   0.058    -.0578557    .0009407
+----------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+                      lfp             lfp             lfp   
+------------------------------------------------------------
+laglfp              0.757***        1.082***        1.261***
+                  (17.65)         (25.23)         (29.41)   
+
+kids0_2            -0.553***       -0.445***       -0.603***
+                  (-9.61)         (-7.73)        (-10.47)   
+
+kids3_5            -0.290***       -0.201***       -0.342***
+                  (-5.44)         (-3.77)         (-6.40)   
+
+kids6_17          -0.0741         -0.0524          -0.131** 
+                  (-1.74)         (-1.23)         (-3.09)   
+
+loghusband~e       -0.252***       -0.206***       -0.327***
+                  (-4.56)         (-3.72)         (-5.91)   
+
+age                 2.333***        1.854**         1.520*  
+                   (3.72)          (2.96)          (2.42)   
+
+age2               -0.244***       -0.186***       -0.166** 
+                  (-4.68)         (-3.57)         (-3.19)   
+------------------------------------------------------------
+N                    5976            5976            5976   
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+end of do-file
+
+. esttab FE ABC JBC, ///
+option / not allowed
+r(198);
+
+.     se ///
+-set /- not allowed; '/' not recognized
+r(199);
+
+.     b(%9.3f) se(%9.3f) ///
+command b is unrecognized
+r(199);
+
+.     star(* 0.10 ** 0.05 *** 0.01) ///
+command star is unrecognized
+r(199);
+
+.     label ///
+invalid syntax
+r(198);
+
+.     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+command mtitles is unrecognized
+r(199);
+
+.     compress
+  (0 bytes saved)
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC, ///
+>     se ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress
+
+-------------------------------------------------------
+                       (1)          (2)          (3)   
+                 Fixed e~s    Analyti~C    Jackkni~C   
+-------------------------------------------------------
+Lagged LFP           0.757***     1.082***     1.261***
+                   (0.043)      (0.043)      (0.043)   
+
+Kids 0-2            -0.553***    -0.445***    -0.603***
+                   (0.058)      (0.058)      (0.058)   
+
+Kids 3-5            -0.290***    -0.201***    -0.342***
+                   (0.053)      (0.053)      (0.053)   
+
+Kids 6-17           -0.074*      -0.052       -0.131***
+                   (0.043)      (0.043)      (0.043)   
+
+Log husband~1000    -0.252***    -0.206***    -0.327***
+                   (0.055)      (0.055)      (0.055)   
+
+Age                  2.333***     1.854***     1.520** 
+                   (0.627)      (0.627)      (0.627)   
+
+Age squared         -0.244***    -0.186***    -0.166***
+                   (0.052)      (0.052)      (0.052)   
+-------------------------------------------------------
+Observations          5976         5976         5976   
+-------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC, ///
+>     se ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress
+
+-------------------------------------------------------
+                       (1)          (2)          (3)   
+                 Fixed e~s    Analyti~C    Jackkni~C   
+-------------------------------------------------------
+Lagged LFP           0.757***     1.082***     1.261***
+                   (0.043)      (0.043)      (0.043)   
+
+Kids 0-2            -0.553***    -0.445***    -0.603***
+                   (0.058)      (0.058)      (0.058)   
+
+Kids 3-5            -0.290***    -0.201***    -0.342***
+                   (0.053)      (0.053)      (0.053)   
+
+Kids 6-17           -0.074*      -0.052       -0.131***
+                   (0.043)      (0.043)      (0.043)   
+
+Log husband~1000    -0.252***    -0.206***    -0.327***
+                   (0.055)      (0.055)      (0.055)   
+
+Age                  2.333***     1.854***     1.520** 
+                   (0.627)      (0.627)      (0.627)   
+
+Age squared         -0.244***    -0.186***    -0.166***
+                   (0.052)      (0.052)      (0.052)   
+-------------------------------------------------------
+Observations          5976         5976         5976   
+-------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC using table1.tex, ///
+>     se ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress
+(output written to table1.tex)
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. estimates restore FE
+(results FE are active now)
+
+. margins, dydx(*) post
+
+Average marginal effects                                 Number of obs = 5,976
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2
+
+----------------------------------------------------------------------------------
+                 |            Delta-method
+                 |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+
+. eststo FE_ape
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. estimates restore FE
+(results FE are active now)
+
+. margins, dydx(*) post
+
+Average marginal effects                                 Number of obs = 5,976
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2
+
+----------------------------------------------------------------------------------
+                 |            Delta-method
+                 |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+
+. eststo FE_ape
+
+. 
+. estimates restore ABC
+(results ABC are active now)
+
+. margins, dydx(*) post
+
+Average marginal effects                                 Number of obs = 5,976
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2
+
+----------------------------------------------------------------------------------
+                 |            Delta-method
+                 |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.082034   .0428824    25.23   0.000     .9979858    1.166082
+         kids0_2 |  -.4454395   .0575942    -7.73   0.000    -.5583221   -.3325568
+         kids3_5 |  -.2010975   .0533896    -3.77   0.000    -.3057392   -.0964559
+        kids6_17 |  -.0524242   .0425297    -1.23   0.218    -.1357808    .0309324
+loghusbandincome |  -.2057621   .0553458    -3.72   0.000    -.3142378   -.0972864
+             age |   1.854205   .6273995     2.96   0.003     .6245242    3.083885
+            age2 |  -.1859307   .0520705    -3.57   0.000    -.2879871   -.0838744
+----------------------------------------------------------------------------------
+
+. eststo ABC_ape
+
+. 
+. estimates restore JBC
+(results JBC are active now)
+
+. margins, dydx(*) post
+
+Average marginal effects                                 Number of obs = 5,976
+
+Expression: Linear prediction, predict()
+dy/dx wrt:  laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2
+
+----------------------------------------------------------------------------------
+                 |            Delta-method
+                 |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   1.261114   .0428824    29.41   0.000     1.177066    1.345162
+         kids0_2 |  -.6029473   .0575942   -10.47   0.000      -.71583   -.4900647
+         kids3_5 |   -.341733   .0533896    -6.40   0.000    -.4463746   -.2370913
+        kids6_17 |  -.1312747   .0425297    -3.09   0.002    -.2146313    -.047918
+loghusbandincome |  -.3272012   .0553458    -5.91   0.000    -.4356769   -.2187255
+             age |   1.520111   .6273995     2.42   0.015     .2904306    2.749791
+            age2 |  -.1661558   .0520705    -3.19   0.001    -.2682122   -.0640995
+----------------------------------------------------------------------------------
+
+. eststo JBC_ape
+
+. 
+end of do-file
+
+. help probitfe
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC, ///
+>     se ///
+>     b2(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress    
+option b2() not allowed
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC , ///
+>     b2 se ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress    
+option b2 not allowed
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC , ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress    
+
+-------------------------------------------------------
+                       (1)          (2)          (3)   
+                 Fixed e~s    Analyti~C    Jackkni~C   
+-------------------------------------------------------
+Lagged LFP           0.757***     1.082***     1.261***
+                   (0.043)      (0.043)      (0.043)   
+
+Kids 0-2            -0.553***    -0.445***    -0.603***
+                   (0.058)      (0.058)      (0.058)   
+
+Kids 3-5            -0.290***    -0.201***    -0.342***
+                   (0.053)      (0.053)      (0.053)   
+
+Kids 6-17           -0.074*      -0.052       -0.131***
+                   (0.043)      (0.043)      (0.043)   
+
+Log husband~1000    -0.252***    -0.206***    -0.327***
+                   (0.055)      (0.055)      (0.055)   
+
+Age                  2.333***     1.854***     1.520** 
+                   (0.627)      (0.627)      (0.627)   
+
+Age squared         -0.244***    -0.186***    -0.166***
+                   (0.052)      (0.052)      (0.052)   
+-------------------------------------------------------
+Observations          5976         5976         5976   
+-------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE ABC JBC , ///
+>         se ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("Fixed effects" "Analytical BC" "Jackknife BC") ///
+>     compress    
+
+-------------------------------------------------------
+                       (1)          (2)          (3)   
+                 Fixed e~s    Analyti~C    Jackkni~C   
+-------------------------------------------------------
+Lagged LFP           0.757***     1.082***     1.261***
+                   (0.043)      (0.043)      (0.043)   
+
+Kids 0-2            -0.553***    -0.445***    -0.603***
+                   (0.058)      (0.058)      (0.058)   
+
+Kids 3-5            -0.290***    -0.201***    -0.342***
+                   (0.053)      (0.053)      (0.053)   
+
+Kids 6-17           -0.074*      -0.052       -0.131***
+                   (0.043)      (0.043)      (0.043)   
+
+Log husband~1000    -0.252***    -0.206***    -0.327***
+                   (0.055)      (0.055)      (0.055)   
+
+Age                  2.333***     1.854***     1.520** 
+                   (0.627)      (0.627)      (0.627)   
+
+Age squared         -0.244***    -0.186***    -0.166***
+                   (0.052)      (0.052)      (0.052)   
+-------------------------------------------------------
+Observations          5976         5976         5976   
+-------------------------------------------------------
+Standard errors in parentheses
+* p<0.10, ** p<0.05, *** p<0.01
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. estimates restore FE
+(results FE are active now)
+
+. matrix b = e(b2)
+
+. matrix V = e(V2)
+
+. ereturn repost b=b V=V
+non e-class program may not set e()
+r(152);
+
+end of do-file
+
+r(152);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. esttab FE_ape ABC_ape JBC_ape, ///
+>     b(b2) se(V2) /// 
+>         b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     label ///
+>     mtitles("FE" "Analytical BC" "Jackknife BC") ///
+>     compress
+option b() not allowed
+r(198);
+
+end of do-file
+
+r(198);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. 
+. estimates restore FE
+(results FE are active now)
+
+. estadd matrix b2 = e(b2)
+e(b2) already defined
+r(110);
+
+end of do-file
+
+r(110);
+
+. b2
+command b2 is unrecognized
+r(199);
+
+. matrix e(b2)
+matrix operation not found
+r(501);
+
+. _est_FE
+command _est_FE is unrecognized
+r(199);
+
+. estimates restore FE
+(results FE are active now)
+
+. matrix b = e(b2)
+
+. matrix V = e(V2)
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. matrix se = vecdiag(V)'
+
+. matrix se = sqrt(se)
+type mismatch
+r(109);
+
+end of do-file
+
+r(109);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. matrix se = vecdiag(V)
+
+. forvalues i = 1/`=colsof(se)' {
+  2.     matrix se[1,`i'] = sqrt(se[1,`i'])
+  3. }
+
+. 
+end of do-file
+
+. matrix list se
+
+se[1,7]
+          laglfp       kids0_2       kids3_5      kids6_17  loghusband~e           age          age2
+r1     .00699592     .03162715     .01744622     .00663592     .01559842     .15086929     .01499937
+
+. matrix list b
+
+b[1,7]
+          laglfp       kids0_2       kids3_5      kids6_17  loghusband~e           age          age2
+r1     .10693517    -.06758766    -.03547009    -.00905186    -.03081414     .28486449    -.02977522
+
+. matrix b = e(b2)
+
+. matrix V = e(V2)
+
+. 
+. ereturn post b V
+
+. estimates store ape_model
+last estimation results not found, nothing to store
+r(301);
+
+. esttab ape_model
+estimation result ape_model not found
+r(111);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. est restore FE
+(results FE are active now)
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. matrix b_ape = e(b2)
+
+. matrix V_ape = e(V2)
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. ereturn post b_ape V_ape
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. estimates store FE_ape
+last estimation results not found, nothing to store
+r(301);
+
+end of do-file
+
+r(301);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+. matrix b_ape = e(b2)
+
+. matrix V_ape = e(V2)
+
+. 
+. * Repost with APEs as the main coefficients
+. ereturn post b_ape V_ape
+
+. 
+. * Store for esttab
+. estimates store FE_ape
+last estimation results not found, nothing to store
+r(301);
+
+end of do-file
+
+r(301);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. probitfe lfp laglfp kids0_2 kids3_5 kids6_17 loghusbandincome age age2, nocorrection
+
+Computing uncorrected fixed effects estimator
+
+note: multiple positive outcomes within groups encountered
+note: multiple positive outcomes within time periods encountered
+note: 797 groups (7173 obs) dropped because of all positive or
+      all negative outcomes
+Iteration 0:  f(p) = -3639.8907  
+Iteration 1:  f(p) = -2869.9501  
+Iteration 2:  f(p) = -2861.4375  
+Iteration 3:  f(p) = -2861.3987  
+Iteration 4:  f(p) = -2861.3987  
+
+Uncorrected fixed-effects estimates
+Individual and time effects
+---------------------------
+ID variable    = ID1979                        Number of obs.       =     5976
+Time variable  = year                          Number of groups     =      664
+                                               Obs. per group: min  =        9
+                                                               avg  =      9.0
+                                                               max  =        9
+                                               LR chi2( 678)        =  2429.26
+                                               Prob > chi2          =   0.0000
+Log-likelihood = -2861.398673                  Pseudo R2            =   0.2980
+
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .7569563   .0428824    17.65   0.000     .6729084    .8410042
+         kids0_2 |  -.5534278   .0575942    -9.61   0.000    -.6663104   -.4405452
+         kids3_5 |  -.2904396   .0533896    -5.44   0.000    -.3950813   -.1857979
+        kids6_17 |  -.0741193   .0425297    -1.74   0.081    -.1574759    .0092373
+loghusbandincome |  -.2523153   .0553458    -4.56   0.000     -.360791   -.1438396
+             age |   2.332555   .6273995     3.72   0.000     1.102874    3.562235
+            age2 |  -.2438083   .0520705    -4.68   0.000    -.3458646   -.1417519
+----------------------------------------------------------------------------------
+Average Partial Effects
+----------------------------------------------------------------------------------
+             lfp | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+          laglfp |   .1069352   .0069959    15.29   0.000     .0932234    .1206469
+         kids0_2 |  -.0675877   .0316272    -2.14   0.033    -.1295757   -.0055996
+         kids3_5 |  -.0354701   .0174462    -2.03   0.042     -.069664   -.0012761
+        kids6_17 |  -.0090519   .0066359    -1.36   0.173     -.022058    .0039543
+loghusbandincome |  -.0308141   .0155984    -1.98   0.048    -.0613865   -.0002418
+             age |   .2848645   .1508693     1.89   0.059    -.0108339    .5805629
+            age2 |  -.0297752   .0149994    -1.99   0.047    -.0591734    -.000377
+----------------------------------------------------------------------------------
+
+. 
+. matrix b_ape = e(b2)
+
+. matrix V_ape = e(V2)
+
+. 
+. * Repost with APEs as the main coefficients
+. ereturn post b_ape V_ape
+
+. ereturn local cmd "feape"
+non e-class program may not set e()
+r(152);
+
+end of do-file
+
+r(152);
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. est restore FE
+(results FE are active now)
+
+. 
+. matrix col1 = e(b2)'
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. est restore ABC
+(results ABC are active now)
+
+. 
+. matrix col2 = e(b2)'
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. matrix results = col1, col2
+
+. matrix colnames results = "Fixed effects" "Analytical BC"
+
+. matrix list results, format(%9.4f)
+
+results[7,2]
+              Fixed effe~s  Analytical~C
+      laglfp        0.1069        0.2072
+     kids0_2       -0.0676       -0.0725
+     kids3_5       -0.0355       -0.0327
+    kids6_17       -0.0091       -0.0085
+loghusband~e       -0.0308       -0.0335
+         age        0.2849        0.3017
+        age2       -0.0298       -0.0303
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. est restore FE
+(results FE are active now)
+
+. matrix col1 = e(b2)'
+
+. matrix cpl4 = vecdiag(e(V2))'
+
+. mata: st_matrix("se1", sqrt(st_matrix("se1")))
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. est restore FE
+(results FE are active now)
+
+. matrix col1 = e(b2)'
+
+. matrix col4 = vecdiag(e(V2))'
+
+. mata: st_matrix("col4", sqrt(st_matrix("col4")))
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. est restore FE
+(results FE are active now)
+
+. matrix col1 = e(b2)'
+
+. matrix col4 = vecdiag(e(V2))'
+
+. mata: st_matrix("col4", sqrt(st_matrix("col4")))
+
+. 
+. 
+. est restore ABC
+(results ABC are active now)
+
+. matrix col2 = e(b2)'
+
+. 
+. 
+. est restore JBC
+(results JBC are active now)
+
+. matrix col3 = e(b2)'
+
+. 
+. 
+. * Combine and print:
+. matrix results = col1, col2, col3, col4
+
+. matrix colnames results = "Fixed effects" "Analytical BC" "Jackknife BC" "SE"
+
+. matrix list results, format(%9.4f)
+
+results[7,4]
+              Fixed effe~s  Analytical~C  Jackknife BC            SE
+      laglfp        0.1069        0.2072        0.1899        0.0070
+     kids0_2       -0.0676       -0.0725       -0.0851        0.0316
+     kids3_5       -0.0355       -0.0327       -0.0473        0.0174
+    kids6_17       -0.0091       -0.0085       -0.0157        0.0066
+loghusband~e       -0.0308       -0.0335       -0.0433        0.0156
+         age        0.2849        0.3017        0.2722        0.1509
+        age2       -0.0298       -0.0303       -0.0285        0.0150
+
+. 
+end of do-file
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. outtable using "table2.tex", mat(results) replace
+command outtable is unrecognized
+r(199);
+
+end of do-file
+
+r(199);
+
+. ssc install outtable
+checking outtable consistency and verifying not already installed...
+installing into /Users/mcerman/Library/Application Support/Stata/ado/plus/...
+installation complete.
+
+. do "/var/folders/fm/7dm4qfgx71103v_lfvtmj0tm0000gp/T//SD42219.000000"
+
+. outtable using "table2.tex", mat(results) replace
+(file table2.tex.tex not found)
+
+. 
+end of do-file
+
