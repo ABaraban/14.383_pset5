@@ -137,7 +137,7 @@ comp_tab[3, ] <- c(sqrt(mean((dml2_rf$ztil)^2)), sqrt(mean((dml2_lasso$ztil)^2))
 rownames(comp_tab) <- c("RMSE for Y:", "RMSE for D:", "RMSE for Z:")
 colnames(comp_tab) <- c("RF", "LASSO")
 rmse_comparison = xtable(comp_tab, digits = 3)
-print(rmse_comparison, file = "rmse_comparison.tex", include.rownames = FALSE)
+print(rmse_comparison, file = "rmse_comparison.tex", include.rownames = TRUE)
 ```
 
 ## Weak instruments
